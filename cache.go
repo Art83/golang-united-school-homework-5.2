@@ -19,7 +19,11 @@ func NewCache() Cache {
 }
 
 func (c Cache) Get(key string) (string, bool) {
-	return c.values[key].value, c.values[key].expiry
+	if _, ok := c.values[key]; ok {
+		return c.values[key].value, ok
+	} else {
+		return "", ok
+	}
 }
 
 func (c Cache) Put(key, value string) {
