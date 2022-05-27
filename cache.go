@@ -20,7 +20,11 @@ func NewCache() Cache {
 
 func (c Cache) Get(key string) (string, bool) {
 	if _, ok := c.values[key]; ok {
-		return c.values[key].value, ok
+		if c.values[key].expiry == false || (c.values[key].expiry == true && c.values[key].deadline.After(time.Now())) {
+			return c.values[key].value, ok
+		} else {
+			return "", false
+		}
 	} else {
 		return "", ok
 	}
